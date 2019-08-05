@@ -18,6 +18,14 @@ class GroceryDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = grocery.name
+        categoryLabel.text = grocery.category.capitalized
+        aisleLabel.text = "Aisle \(grocery.aisle)"
+        countLabel.text = "\(grocery.count) items"
+        if grocery.count < 20 {
+            countLabel.textColor = .red
+        } else {
+            countLabel.textColor = .black
+        }
     }
 }
