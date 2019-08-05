@@ -25,13 +25,22 @@ class GroceriesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groceries.count
     }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return "Total inventory: \(determineTotalCount())"
+    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "GroceryItemCell", for: indexPath) as? GroceryItemTableViewCell else { return UITableViewCell() }
         let grocery = groceries[indexPath.row]
         cell.nameLabel.text = grocery.name
         cell.categoryLabel.text = grocery.category
-        cell.countLabel.text = "\(grocery.count)"
+        cell.countLabel.text = "\(grocery.count) items"
+        if grocery.count < 20 {
+            cell.countLabel.textColor = .red
+        } else {
+            cell.countLabel.textColor = .black
+        }
         return cell
     }
 
@@ -55,5 +64,13 @@ class GroceriesTableViewController: UITableViewController {
         let rice = (name: "Minute Rice", aisle: 2, category: "dry rice and beans", count: 62)
         let turkey = (name: "Boar's Head turkey", aisle: 9, category: "deli", count: 4)
         groceries.append(contentsOf: [carrots, soup, cereal, pringles, tostitos, seafood, rice, turkey])
+    }
+    
+    private func determineTotalCount() -> String {
+        var totalCount = 0
+        for grocery in groceries {
+            totalCount += grocery.count
+        }
+        return "\(totalCount) items"
     }
 }
